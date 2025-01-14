@@ -6,3 +6,4 @@ geopandas
 folium
 Babel
 shapely
+streamlit-folium
