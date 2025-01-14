@@ -324,7 +324,7 @@ plt.grid(True)
 st.pyplot(fig)
 
 # GEOSPATIAL ANALYSIS (Rata-rata jarak dari kota ke kota lain)
-st.subheader("Kecepatan Pengiriman Rata-Rata dari Kota ke Kota Lain")
-folium_static(geospatial_df)
+# st.subheader("Kecepatan Pengiriman Rata-Rata dari Kota ke Kota Lain")
+# folium_static(geospatial_df)
 
 st.caption('Copyright (c) Dicoding 2023')
