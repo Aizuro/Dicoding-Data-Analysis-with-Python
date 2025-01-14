@@ -4,3 +4,6 @@ seaborn
 streamlit
 geopandas
 folium
+babel.numbers
+shapely.geometry
+streamlit_folium
