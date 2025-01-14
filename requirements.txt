@@ -4,3 +4,5 @@ seaborn
 streamlit
 geopandas
 folium
+Babel
+shapely
