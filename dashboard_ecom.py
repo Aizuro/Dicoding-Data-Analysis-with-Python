@@ -192,7 +192,7 @@ st.pyplot(fig)
 # Relationship between Delivery Speed and Review Score (Pertanyaan 2)
 st.subheader("Delivery Speed and Review Score Relation")
 bins = [0, 25, 50, 100, relation_deliveryNreview_df + 1]  # Tambahkan nilai maksimum + 1 ke bins
-labels = ['Cepat', 'Normal', 'Lambat', 'Sangat Lambat']
+labels = ['Fast', 'Normal', 'Slow', 'Very Slow']
 
 all_df['delivery_category'] = pd.cut(
     all_df['delivery_speed'],
