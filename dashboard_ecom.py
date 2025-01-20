@@ -177,15 +177,15 @@ sns.barplot(
     y=top_product_df['total_orders'],
     palette="viridis"
 )
-plt.title("Jumlah Pesanan Berdasarkan Kategori Produk", fontsize=14)
+plt.title("Number of Orders by Product Category", fontsize=14)
 plt.xticks(rotation=45)
-plt.ylabel("Jumlah Pesanan")
-plt.xlabel("Kategori Produk")
+plt.ylabel("Number of Orders")
+plt.xlabel("Product Category")
 st.pyplot(fig)
 
 fig, ax = plt.subplots(figsize=(8, 8))
 top_product_df['total_revenue'].plot(kind='pie', autopct='%1.1f%%', colormap='viridis', startangle=90)
-plt.title("Kontribusi Pendapatan per Kategori Produk")
+plt.title("Revenue Contribution by Product Category")
 plt.ylabel(None)
 st.pyplot(fig)
 
@@ -208,9 +208,9 @@ sns.boxplot(
     data=all_df,
     palette='viridis'
 )
-plt.title("Distribusi Skor Ulasan Berdasarkan Kategori Pengiriman", fontsize=14)
-plt.xlabel("Kategori Pengiriman")
-plt.ylabel("Skor Ulasan")
+plt.title("Distribution of Review Scores by Delivery Category", fontsize=14)
+plt.xlabel("Delivery Category")
+plt.ylabel("Review Scores")
 st.pyplot(fig)
 
 # RFM
@@ -316,7 +316,7 @@ for i in range(top_sellers_df.shape[0]):
     )
 
 # Pengaturan plot
-plt.title('Clustering Berdasarkan Kuartil: Total Orders dan Total Revenue', fontsize=14)
+plt.title('Total Sellers Orders and Total Sellers Revenue', fontsize=14)
 plt.xlabel('Total Orders')
 plt.ylabel('Total Revenue')
 plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', title='Cluster')
@@ -324,7 +324,7 @@ plt.grid(True)
 st.pyplot(fig)
 
 # GEOSPATIAL ANALYSIS (Rata-rata jarak dari kota ke kota lain)
-st.subheader("Kecepatan Pengiriman Rata-Rata dari Kota ke Kota Lain")
+st.subheader("Average Intercity Delivery Speed")
 folium_static(geospatial_df)
 
 st.caption('Copyright (c) Dicoding 2023')
