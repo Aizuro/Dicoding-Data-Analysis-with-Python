@@ -233,7 +233,7 @@ with col3:
 fig, ax = plt.subplots(nrows=1, ncols=3, figsize=(60, 15))
 colors = ["#90CAF9", "#90CAF9", "#90CAF9", "#90CAF9", "#90CAF9"]
  
-sns.barplot(y="recency", x="customer", data=rfm_df.sort_values(by="recency", ascending=False).head(3), palette=colors, ax=ax[0])
+sns.barplot(y="recency", x="customer", data=rfm_df.sort_values(by="recency", ascending=True).head(3), palette=colors, ax=ax[0])
 ax[0].set_ylabel(None)
 ax[0].set_xlabel("customer", fontsize=30)
 ax[0].set_title("By Recency (days)", loc="center", fontsize=50)
