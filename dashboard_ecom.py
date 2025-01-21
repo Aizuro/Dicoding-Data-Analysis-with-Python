@@ -95,15 +95,6 @@ def create_geospatial_df(df):
 
     return m
 
-def create_top_sellers_df(df):
-    cluster_df = all_df.groupby(by="seller", as_index=False).agg({
-    "order_id": "count",
-    "price": "sum"
-    })
-    cluster_df.columns = ["seller", "total_orders", "total_revenue"]
-    
-    return cluster_df
-
 # Dataset
 all_df = pd.read_csv("all_data.csv")
 customerNseller_loc_df = pd.read_csv("customer_seller_loc.csv")
@@ -138,7 +129,6 @@ top_product_df = create_top_product_df(main_df)
 relation_deliveryNreview_df = create_relation_deliveryNreview_df(main_df)
 rfm_df = create_rfm_df(main_df)
 geospatial_df = create_geospatial_df(customerNseller_loc_df)
-top_sellers_df = create_top_sellers_df(main_df)
 
 st.header('Dicoding Collection Dashboard :sparkles:')
 
@@ -254,73 +244,6 @@ ax[2].set_title("By Monetary", loc="center", fontsize=50)
 ax[2].tick_params(axis='y', labelsize=30)
 ax[2].tick_params(axis='x', labelsize=35)
  
-st.pyplot(fig)
-
-# TOP SELLER
-st.subheader("Seller Performance")
-q_orders = top_sellers_df['total_orders'].quantile([0.25, 0.5, 0.75]).to_dict()
-q_revenue = top_sellers_df['total_revenue'].quantile([0.25, 0.5, 0.75]).to_dict()
-
-# Fungsi clustering berdasarkan kuartil untuk total_revenue
-def quartile_revenue_cluster(revenue):
-    if revenue <= q_revenue[0.25]:
-        return 'Low Revenue'
-    elif q_revenue[0.25] < revenue <= q_revenue[0.5]:
-        return 'Moderate Revenue'
-    elif q_revenue[0.5] < revenue <= q_revenue[0.75]:
-        return 'High Revenue'
-    else:
-        return 'Very High Revenue'
-
-# Fungsi clustering berdasarkan kuartil untuk total_orders
-def quartile_order_cluster(orders):
-    if orders <= q_orders[0.25]:
-        return 'Low Orders'
-    elif q_orders[0.25] < orders <= q_orders[0.5]:
-        return 'Moderate Orders'
-    elif q_orders[0.5] < orders <= q_orders[0.75]:
-        return 'High Orders'
-    else:
-        return 'Very High Orders'
-
-# Menentukan cluster berdasarkan kuartil
-top_sellers_df['revenue_cluster'] = top_sellers_df['total_revenue'].apply(quartile_revenue_cluster)
-top_sellers_df['order_cluster'] = top_sellers_df['total_orders'].apply(quartile_order_cluster)
-
-# Menggabungkan cluster kuartil
-def combine_quartile_clusters(row):
-    return f"{row['revenue_cluster']} & {row['order_cluster']}"
-
-top_sellers_df['combined_cluster'] = top_sellers_df.apply(combine_quartile_clusters, axis=1)
-
-# Visualisasi Bubble Chart
-fig, ax = plt.subplots(figsize=(12, 8))
-sns.scatterplot(
-    x='total_orders',
-    y='total_revenue',
-    size='total_revenue',  # Ukuran bubble berdasarkan total revenue
-    hue='combined_cluster',  # Warna berdasarkan cluster gabungan
-    data=top_sellers_df,
-    style='combined_cluster',
-    sizes=(100, 1000),  # Ukuran minimum dan maksimum bubble
-    alpha=0.8
-)
-
-# Menambahkan label nama seller pada bubble
-for i in range(top_sellers_df.shape[0]):
-    plt.text(
-        x=top_sellers_df['total_orders'].iloc[i], 
-        y=top_sellers_df['total_revenue'].iloc[i],
-        s=top_sellers_df['seller'].iloc[i],  # Nama seller
-        fontsize=8
-    )
-
-# Pengaturan plot
-plt.title('Total Sellers Orders and Total Sellers Revenue', fontsize=14)
-plt.xlabel('Total Orders')
-plt.ylabel('Total Revenue')
-plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', title='Cluster')
-plt.grid(True)
 st.pyplot(fig)
 
 # GEOSPATIAL ANALYSIS (Rata-rata jarak dari kota ke kota lain)
