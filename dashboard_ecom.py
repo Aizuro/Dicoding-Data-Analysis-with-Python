@@ -35,15 +35,17 @@ def create_top_product_df(df):
 
     return top5_product_summary
 
+
 def create_relation_deliveryNreview_df(df):
-    max_delivery_speed = all_df['delivery_speed'].max()  # Nilai maksimum dari delivery_speed
+    max_delivery_speed = df['delivery_speed'].max()  # Nilai maksimum dari delivery_speed
 
     return max_delivery_speed
 
+
 def create_rfm_df(df):
     rfm_df = df.groupby(by="customer_id", as_index=False).agg({
-        "customer" : "first",
-        "order_purchase_timestamp": "max", #mengambil tanggal order terakhir
+        "customer": "first",
+        "order_purchase_timestamp": "max", # Mengambil tanggal order terakhir
         "order_id": "count",
         "price": "sum"
     })
@@ -55,6 +57,7 @@ def create_rfm_df(df):
     rfm_df.drop("max_order_timestamp", axis=1, inplace=True)
     
     return rfm_df
+
 
 def create_geospatial_df(df):
     df['seller_location'] = df.apply(lambda row: Point(row['lon_y'], row['lat_y']), axis=1)
@@ -116,15 +119,17 @@ with st.sidebar:
     
     # Mengambil start_date & end_date dari date_input
     start_date, end_date = st.date_input(
-        label='Time Range',min_value=min_date,
+        label='Time Range', min_value=min_date,
         max_value=max_date,
         value=[min_date, max_date]
     )
 
+# Filter berdasarkan waktu
 main_df = all_df[(all_df["order_purchase_timestamp"] >= str(start_date)) & 
                 (all_df["order_purchase_timestamp"] <= str(end_date))]
 
-daily_orders_df = create_daily_orders_df(main_df)
+# Membuat data hasil filter
+filtered_daily_orders_df = create_daily_orders_df(main_df)
 top_product_df = create_top_product_df(main_df)
 relation_deliveryNreview_df = create_relation_deliveryNreview_df(main_df)
 rfm_df = create_rfm_df(main_df)
@@ -132,23 +137,23 @@ geospatial_df = create_geospatial_df(customerNseller_loc_df)
 
 st.header('Dicoding Collection Dashboard :sparkles:')
 
-# PERFORMACE OVERVIEW
+# PERFORMANCE OVERVIEW
 st.subheader('Performance Overview')
  
 col1, col2 = st.columns(2)
  
 with col1:
-    total_orders = daily_orders_df.order_count.sum()
+    total_orders = filtered_daily_orders_df.order_count.sum()
     st.metric("Total orders", value=total_orders)
  
 with col2:
-    total_revenue = format_currency(daily_orders_df.revenue.sum(), "AUD", locale='es_CO') 
+    total_revenue = format_currency(filtered_daily_orders_df.revenue.sum(), "AUD", locale='es_CO') 
     st.metric("Total Revenue", value=total_revenue)
  
 fig, ax = plt.subplots(figsize=(16, 8))
 ax.plot(
-    daily_orders_df["order_purchase_timestamp"],
-    daily_orders_df["order_count"],
+    filtered_daily_orders_df["order_purchase_timestamp"],
+    filtered_daily_orders_df["order_count"],
     marker='o', 
     linewidth=2,
     color="#90CAF9"
@@ -184,8 +189,8 @@ st.subheader("Delivery Speed and Review Score Relation")
 bins = [0, 25, 50, 100, relation_deliveryNreview_df + 1]  # Tambahkan nilai maksimum + 1 ke bins
 labels = ['Fast', 'Normal', 'Slow', 'Very Slow']
 
-all_df['delivery_category'] = pd.cut(
-    all_df['delivery_speed'],
+main_df['delivery_category'] = pd.cut(
+    main_df['delivery_speed'],
     bins=bins,
     labels=labels,
     include_lowest=True
@@ -195,7 +200,7 @@ fig, ax = plt.subplots(figsize=(10, 6))
 sns.boxplot(
     x='delivery_category',
     y='review_score',
-    data=all_df,
+    data=main_df,
     palette='viridis'
 )
 plt.title("Distribution of Review Scores by Delivery Category", fontsize=14)
