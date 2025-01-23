@@ -166,21 +166,32 @@ st.pyplot(fig)
 # TOP PRODUCTS ORDER (Pertanyaan 1)
 st.subheader('Top Products (Order)')
 
-fig, ax = plt.subplots(figsize=(15, 6))
-sns.barplot(
-    x=top_product_df.index,
-    y=top_product_df['total_orders'],
-    palette="viridis"
-)
-plt.title("Number of Orders by Product Category", fontsize=14)
-plt.xticks(rotation=45)
-plt.ylabel("Number of Orders")
-plt.xlabel("Product Category")
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(24, 6))
+
+colors = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
+
+sns.barplot(x="total_orders", y="product_category_name_english", data=product_summary.head(5), palette=colors, ax=ax[0])
+ax[0].set_ylabel(None)
+ax[0].set_xlabel(None)
+ax[0].set_title("Best Performing Product", loc="center", fontsize=15)
+ax[0].tick_params(axis ='y', labelsize=12)
+
+sns.barplot(x="total_orders", y="product_category_name_english", data=product_summary.sort_values(by="total_orders", ascending=True).head(5), palette=colors, ax=ax[1])
+ax[1].set_ylabel(None)
+ax[1].set_xlabel(None)
+ax[1].invert_xaxis()
+ax[1].yaxis.set_label_position("right")
+ax[1].yaxis.tick_right()
+ax[1].set_title("Worst Performing Product", loc="center", fontsize=15)
+ax[1].tick_params(axis='y', labelsize=12)
+
+plt.suptitle("Best and Worst Performing Product by Number of Orders", fontsize=20)
 st.pyplot(fig)
 
-fig, ax = plt.subplots(figsize=(8, 8))
-top_product_df['total_revenue'].plot(kind='pie', autopct='%1.1f%%', colormap='viridis', startangle=90)
-plt.title("Revenue Contribution by Product Category")
+# Pie Chart: Kontribusi pendapatan per kategori
+plt.figure(figsize=(8, 8))
+top5_product_summary['total_revenue'].plot(kind='pie', autopct='%1.1f%%', colormap='summer', startangle=90)
+plt.title("Revenue Contribution from Top 5 Product Categories")
 plt.ylabel(None)
 st.pyplot(fig)
 
