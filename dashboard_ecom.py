@@ -187,7 +187,7 @@ plt.suptitle("Best and Worst Performing Product by Number of Orders", fontsize=2
 st.pyplot(fig)
 
 # Pie Chart: Kontribusi pendapatan per kategori
-plt.figure(figsize=(8, 8))
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(8, 8))
 top_product_df['total_revenue'].plot(kind='pie', autopct='%1.1f%%', colormap='summer', startangle=90)
 plt.title("Revenue Contribution from Top 5 Product Categories")
 plt.ylabel(None)
@@ -196,16 +196,28 @@ st.pyplot(fig)
 # Relationship between Delivery Speed and Review Score (Pertanyaan 2)
 st.subheader("Delivery Speed and Review Score Relation")
 
-average_delivery_speed = relation_deliveryNreview_df.groupby('delivery_category')['delivery_speed'].mean().reset_index()
+fast = relation_deliveryNreview_df[relation_deliveryNreview_df[delivery_category] == 'Cepat']
+normal = relation_deliveryNreview_df[relation_deliveryNreview_df[delivery_category] == 'Normal']
+slow = relation_deliveryNreview_df[relation_deliveryNreview_df[delivery_category] == 'Lambat']
+very_slow = relation_deliveryNreview_df[relation_deliveryNreview_df[delivery_category] == 'Sangat Lambat']
 
-# Membuat kolom untuk setiap kategori
-categories = average_delivery_speed['delivery_category'].unique()
-cols = st.columns(len(categories))
+col1, col2, col3, col4 = st.columns(4)
 
-# Menampilkan rata-rata kecepatan pengiriman untuk setiap kategori dalam kolom
-for col, category in zip(cols, categories):
-    avg_speed = average_delivery_speed[average_delivery_speed['delivery_category'] == category]['delivery_speed'].values[0]
-    col.metric(f"Rata-rata Kecepatan Pengiriman ({category})", value=f"{avg_speed:.2f} d")
+with col1:
+    fast_score = fast.review_score.mean()
+    st.metric("Fast", value=fast_score)
+ 
+with col2:
+    normal_score = normal.review_score.mean()
+    st.metric("Fast", value=normal_score)
+
+with col3:
+    slow_score = slow.review_score.mean()
+    st.metric("Fast", value=slow_score)
+
+with col4:
+    very_slow_score = very_slow.review_score.mean()
+    st.metric("Fast", value=very_slow_score)
     
 bins = [0, 25, 50, 100, relation_deliveryNreview_df + 1]  # Tambahkan nilai maksimum + 1 ke bins
 labels = ['Fast', 'Normal', 'Slow', 'Very Slow']
