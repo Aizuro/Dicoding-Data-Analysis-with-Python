@@ -187,7 +187,7 @@ plt.suptitle("Best and Worst Performing Product by Number of Orders", fontsize=2
 st.pyplot(fig)
 
 # Pie Chart: Kontribusi pendapatan per kategori
-fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(8, 8))
+fig, ax = plt.subplots(figsize=(8, 8))
 top5 = top_product_df.head(5)
 top5['total_revenue'].plot(kind='pie', autopct='%1.1f%%', colormap='summer', startangle=90)
 plt.title("Revenue Contribution from Top 5 Product Categories")
