@@ -168,13 +168,13 @@ fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(24, 6))
 
 colors = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
 
-sns.barplot(x="total_orders", y="product_category_name_english", data=product_summary.head(5), palette=colors, ax=ax[0])
+sns.barplot(x="total_orders", y="product_category_name_english", data=top_product_df.head(5), palette=colors, ax=ax[0])
 ax[0].set_ylabel(None)
 ax[0].set_xlabel(None)
 ax[0].set_title("Best Performing Product", loc="center", fontsize=15)
 ax[0].tick_params(axis ='y', labelsize=12)
 
-sns.barplot(x="total_orders", y="product_category_name_english", data=product_summary.sort_values(by="total_orders", ascending=True).head(5), palette=colors, ax=ax[1])
+sns.barplot(x="total_orders", y="product_category_name_english", data=top_product_df.sort_values(by="total_orders", ascending=True).head(5), palette=colors, ax=ax[1])
 ax[1].set_ylabel(None)
 ax[1].set_xlabel(None)
 ax[1].invert_xaxis()
