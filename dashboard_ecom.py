@@ -197,28 +197,26 @@ st.pyplot(fig)
 # Relationship between Delivery Speed and Review Score (Pertanyaan 2)
 st.subheader("Delivery Speed and Review Score Relation")
 
-fast = relation_deliveryNreview_df[relation_deliveryNreview_df['delivery_category'] == 'Cepat']
-normal = relation_deliveryNreview_df[relation_deliveryNreview_df['delivery_category'] == 'Normal']
-slow = relation_deliveryNreview_df[relation_deliveryNreview_df['delivery_category'] == 'Lambat']
-very_slow = relation_deliveryNreview_df[relation_deliveryNreview_df['delivery_category'] == 'Sangat Lambat']
+average_scores = relation_deliveryNreview_df.groupby('delivery_category')['review_score'].mean().reset_index()
 
+# Membuat kolom untuk menampilkan hasil
 col1, col2, col3, col4 = st.columns(4)
 
+# Menampilkan rata-rata untuk setiap kategori
+categories = ['Cepat', 'Normal', 'Lambat', 'Sangat Lambat']
+scores = {category: average_scores[average_scores['delivery_category'] == category]['review_score'].values[0] if not average_scores[average_scores['delivery_category'] == category].empty else 0 for category in categories}
+
 with col1:
-    fast_score = fast.review_score.mean()
-    st.metric("Fast", value=fast_score)
- 
+    st.metric("Fast", value=f"{scores['Cepat']:.2f}")
+
 with col2:
-    normal_score = normal.review_score.mean()
-    st.metric("Fast", value=normal_score)
+    st.metric("Normal", value=f"{scores['Normal']:.2f}")
 
 with col3:
-    slow_score = slow.review_score.mean()
-    st.metric("Fast", value=slow_score)
+    st.metric("Slow", value=f"{scores['Lambat']:.2f}")
 
 with col4:
-    very_slow_score = very_slow.review_score.mean()
-    st.metric("Fast", value=very_slow_score)
+    st.metric("Very Slow", value=f"{scores['Sangat Lambat']:.2f}")
     
 bins = [0, 25, 50, 100, relation_deliveryNreview_df + 1]  # Tambahkan nilai maksimum + 1 ke bins
 labels = ['Fast', 'Normal', 'Slow', 'Very Slow']
