@@ -196,16 +196,17 @@ st.pyplot(fig)
 # Relationship between Delivery Speed and Review Score (Pertanyaan 2)
 st.subheader("Delivery Speed and Review Score Relation")
 
-col1, col2, col3, col4 = st.columns(4)
- 
-with col1:
-    fast = relation_deliveryNreview_df[relation_deliveryNreview_df['delivery_category'] == 'Cepat'].delivery_speed.mean()
-    st.metric("Fast", value=fast)
- 
-with col2:
-    total_revenue = format_currency(filtered_daily_orders_df.revenue.sum(), "AUD", locale='es_CO') 
-    st.metric("Total Revenue", value=total_revenue)
+average_delivery_speed = relation_deliveryNreview_df.groupby('delivery_category')['delivery_speed'].mean().reset_index()
 
+# Membuat kolom untuk setiap kategori
+categories = average_delivery_speed['delivery_category'].unique()
+cols = st.columns(len(categories))
+
+# Menampilkan rata-rata kecepatan pengiriman untuk setiap kategori dalam kolom
+for col, category in zip(cols, categories):
+    avg_speed = average_delivery_speed[average_delivery_speed['delivery_category'] == category]['delivery_speed'].values[0]
+    col.metric(f"Rata-rata Kecepatan Pengiriman ({category})", value=f"{avg_speed:.2f} d")
+    
 bins = [0, 25, 50, 100, relation_deliveryNreview_df + 1]  # Tambahkan nilai maksimum + 1 ke bins
 labels = ['Fast', 'Normal', 'Slow', 'Very Slow']
 
