@@ -197,7 +197,7 @@ st.pyplot(fig)
 # Relationship between Delivery Speed and Review Score (Pertanyaan 2)
 st.subheader("Delivery Speed and Review Score Relation")
 
-average_scores = relation_deliveryNreview_df.groupby('delivery_category')['review_score'].mean().reset_index()
+average_scores = main_df.groupby('delivery_category')['review_score'].mean().reset_index()
 
 # Membuat kolom untuk menampilkan hasil
 col1, col2, col3, col4 = st.columns(4)
