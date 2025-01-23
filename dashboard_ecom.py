@@ -164,7 +164,7 @@ st.pyplot(fig)
 # TOP PRODUCTS ORDER (Pertanyaan 1)
 st.subheader('Top Products (Order)')
 
-fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(24, 6))
+fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(30, 8))
 
 colors = ["#72BCD4", "#D3D3D3", "#D3D3D3", "#D3D3D3", "#D3D3D3"]
 
