@@ -26,14 +26,12 @@ def create_daily_orders_df(df):
 
 
 def create_top_product_df(df):
-    product_summary = df.groupby('product_category_name').agg(
+    product_summary = df.groupby('product_category_name_english').agg(
         total_orders=('order_id', 'count'),
         total_revenue=('price', 'sum')
     ).sort_values(by='total_orders', ascending=False)
 
-    top5_product_summary = product_summary.head(5)
-
-    return top5_product_summary
+    return product_summary
 
 
 def create_relation_deliveryNreview_df(df):
