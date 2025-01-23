@@ -188,13 +188,24 @@ st.pyplot(fig)
 
 # Pie Chart: Kontribusi pendapatan per kategori
 plt.figure(figsize=(8, 8))
-top5_product_summary['total_revenue'].plot(kind='pie', autopct='%1.1f%%', colormap='summer', startangle=90)
+top_product_df['total_revenue'].plot(kind='pie', autopct='%1.1f%%', colormap='summer', startangle=90)
 plt.title("Revenue Contribution from Top 5 Product Categories")
 plt.ylabel(None)
 st.pyplot(fig)
 
 # Relationship between Delivery Speed and Review Score (Pertanyaan 2)
 st.subheader("Delivery Speed and Review Score Relation")
+
+col1, col2, col3, col4 = st.columns(4)
+ 
+with col1:
+    fast = relation_deliveryNreview_df[relation_deliveryNreview_df['delivery_category'] == 'Cepat'].delivery_speed.mean()
+    st.metric("Fast", value=fast)
+ 
+with col2:
+    total_revenue = format_currency(filtered_daily_orders_df.revenue.sum(), "AUD", locale='es_CO') 
+    st.metric("Total Revenue", value=total_revenue)
+
 bins = [0, 25, 50, 100, relation_deliveryNreview_df + 1]  # Tambahkan nilai maksimum + 1 ke bins
 labels = ['Fast', 'Normal', 'Slow', 'Very Slow']
 
