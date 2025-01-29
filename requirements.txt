@@ -7,3 +7,4 @@ folium
 Babel
 shapely
 streamlit-folium
+plotly
