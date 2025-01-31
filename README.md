@@ -15,5 +15,5 @@ pip install -r requirements.txt
 
 ## Run steamlit app
 ```
-streamlit run dashboard_ecom.py
+streamlit run 🏠_Home.py
 ```
